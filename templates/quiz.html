@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>{{ filename }}</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/" class="back-btn">
+        ← Quay lại
+    </a>
+
+    <h1>{{ filename }}</h1>
+
+    <form id="quizForm">
+
+        {% for q in questions %}
+
+            {% set question_index = loop.index0 %}
+
+        <div class="question">
+
+            <div class="question-title">
+
+                {{ q.question }}
+
+            </div>
+
+            <div class="answers">
+
+                {% for ans in q.answers %}
+
+                    {% set letter = ans[0] %}
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="question{{ question_index }}"
+                            value="{{ letter }}"
+                        >
+
+                        {{ ans }}
+
+                    </label>
+
+                {% endfor %}
+
+            </div>
+
+            <input
+                type="hidden"
+                class="correct-answer-value"
+                value="{{ q.correct }}"
+            >
+
+        </div>
+
+        {% endfor %}
+
+        <button
+            type="button"
+            class="submit-btn"
+            onclick="submitQuiz()"
+        >
+            Nộp bài
+        </button>
+
+    </form>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function submitQuiz(){
+
+    const questions =
+        document.querySelectorAll(".question");
+
+    let score = 0;
+
+    questions.forEach(question => {
+
+        const correct =
+            question.querySelector(
+                ".correct-answer-value"
+            ).value;
+
+        const selected =
+            question.querySelector(
+                "input[type=radio]:checked"
+            );
+
+        const labels =
+            question.querySelectorAll("label");
+
+        labels.forEach(label => {
+
+            label.classList.remove(
+                "correct-answer",
+                "wrong-answer"
+            );
+
+        });
+
+        let userAnswer = "";
+
+        if(selected){
+
+            userAnswer = selected.value;
+
+        }
+
+        if(userAnswer === correct){
+
+            score++;
+
+            question.classList.add("correct");
+
+        }else{
+
+            question.classList.add("wrong");
+
+        }
+
+        labels.forEach(label => {
+
+            const input =
+                label.querySelector("input");
+
+            if(input.value === correct){
+
+                label.classList.add(
+                    "correct-answer"
+                );
+
+            }
+
+            if(
+                input.checked &&
+                input.value !== correct
+            ){
+
+                label.classList.add(
+                    "wrong-answer"
+                );
+
+            }
+
+        });
+
+    });
+
+    document.getElementById("result").innerHTML = `
+        <div class="result">
+            Điểm: ${score} / ${questions.length}
+        </div>
+    `;
+
+}
+
+</script>
+
+</body>
+</html>

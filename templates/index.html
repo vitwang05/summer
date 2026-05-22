@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách đề thi</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Danh sách đề thi</h1>
+    <div class="upload-box">
+
+        <input
+            type="file"
+            id="uploadFile"
+            accept=".txt"
+        >
+
+        <button onclick="previewFile()">
+            Kiểm tra đề
+        </button>
+
+    </div>
+
+    <div id="previewArea"></div>
+    <form
+        action="/upload"
+        method="POST"
+        enctype="multipart/form-data"
+        class="upload-form"
+    >
+
+        <input
+            type="file"
+            name="file"
+            accept=".txt"
+            required
+        >
+
+        <button type="submit">
+            Upload đề
+        </button>
+
+    </form>
+    <div class="exam-list">
+
+        {% for exam in exams %}
+
+            <div class="exam-card">
+
+                <a href="/quiz/{{ exam }}">
+
+                    {{ exam }}
+
+                </a>
+
+                <a
+                    href="/delete/{{ exam }}"
+                    class="delete-btn"
+                    onclick="return confirm('Xóa đề này?')"
+                >
+                    Xóa
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+<script>
+
+async function previewFile(){
+
+    const input =
+        document.getElementById("uploadFile");
+
+    const file = input.files[0];
+
+    if(!file){
+
+        alert("Chọn file");
+
+        return;
+
+    }
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch(
+        "/validate",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    const data = await response.json();
+
+    const preview =
+        document.getElementById("previewArea");
+
+    if(!data.success){
+
+        let html = `
+            <div class="error-box">
+
+                <h3>File lỗi cấu trúc</h3>
+        `;
+
+        data.errors.forEach(error => {
+
+            html += `<p>${error}</p>`;
+
+        });
+
+        html += `</div>`;
+
+        preview.innerHTML = html;
+
+        return;
+
+    }
+
+    let html = `
+        <div class="success-box">
+
+            <h3>File hợp lệ</h3>
+
+            <button onclick="uploadExam()">
+                Upload đề
+            </button>
+
+            <hr>
+    `;
+
+    data.questions.forEach((q,index)=>{
+
+        html += `
+            <div class="preview-question">
+
+                <b>${q.question}</b>
+        `;
+
+        q.answers.forEach(ans => {
+
+            html += `<p>${ans}</p>`;
+
+        });
+
+        html += `
+                <p>
+                    <b>Đáp án:</b> ${q.correct}
+                </p>
+
+            </div>
+        `;
+
+    });
+
+    html += `</div>`;
+
+    preview.innerHTML = html;
+
+}
+
+async function uploadExam(){
+
+    const input =
+        document.getElementById("uploadFile");
+
+    const file = input.files[0];
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    await fetch(
+        "/upload",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    location.reload();
+
+}
+
+</script>

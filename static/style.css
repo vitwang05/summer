@@ -1,0 +1,164 @@
+body{
+    font-family:Arial;
+    background:#f3f4f6;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+}
+
+h1{
+    text-align:center;
+}
+
+.exam-list{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(220px,1fr));
+    gap:15px;
+}
+
+.exam-card{
+    display:block;
+    text-decoration:none;
+    background:#dbeafe;
+    padding:20px;
+    border-radius:10px;
+    color:black;
+    font-weight:bold;
+}
+
+.exam-card:hover{
+    background:#bfdbfe;
+}
+
+.question{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:20px;
+}
+
+.question.correct{
+    border:2px solid green;
+    background:#f0fdf4;
+}
+
+.question.wrong{
+    border:2px solid red;
+    background:#fef2f2;
+}
+
+.question-title{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.answers label{
+    display:block;
+    padding:8px;
+    border-radius:6px;
+    margin-bottom:6px;
+}
+
+.correct-answer{
+    background:#bbf7d0;
+}
+
+.wrong-answer{
+    background:#fecaca;
+}
+
+.submit-btn{
+    padding:12px 18px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+.back-btn{
+    text-decoration:none;
+    display:inline-block;
+    margin-bottom:15px;
+}
+
+.result{
+    margin-top:20px;
+    padding:15px;
+    background:#dbeafe;
+    border-radius:10px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.upload-form{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.upload-form input{
+    flex:1;
+}
+
+.upload-form button{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+.upload-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.upload-box button{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+.delete-btn{
+    display:inline-block;
+    margin-top:10px;
+    color:red;
+    text-decoration:none;
+}
+
+.error-box{
+    background:#fee2e2;
+    border:1px solid red;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.success-box{
+    background:#dcfce7;
+    border:1px solid green;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.preview-question{
+    background:white;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
